@@ -51,3 +51,4 @@ if __name__ == "__main__":
             print(word, [w for w, c in model.wv.similar_by_word(word=word)])
         else:
             print(word, "not in vocab")
+

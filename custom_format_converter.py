@@ -27,11 +27,17 @@ def read_amazon_format(path: str, sentence=True):
     :param path: a path to a filename
     :param sentence: whether to split the reviews into sentences
     """
+    skipped = 0
+    fp = open(path + ".sentences.txt", "w+")
     with open(path + ("" if sentence else "-full_text") + ".txt", "w+") as wf:
 
         for line in tqdm(open(path)):
+            text = json.loads(line.strip())
+            if "reviewText" not in text:
+                skipped += 1
+                continue
             # reading the text
-            text = json.loads(line.strip())["reviewText"].replace("\n", " ")
+            text = text["reviewText"].replace("\n", " ")
             # splitting into sentences
             sentences = sent_tokenize(text)
             tokenized_sentences = [tokenizer.tokenize(sentence) for sentence in sentences]
@@ -40,11 +46,14 @@ def read_amazon_format(path: str, sentence=True):
             lemmatized_sentences = [[lemmatize(word) for word in s if not word in stops and str.isalpha(word)]
                                     for s in tokenized_sentences]
 
-            for sentence in lemmatized_sentences:
-                wf.write(" ".join(sentence) + "\n" if sentence else " ")
+            for i, sentence in enumerate(lemmatized_sentences):
+                if sentence:
+                    wf.write(" ".join(sentence) + "\n")
+                    fp.write(sentences[i] + "\n")
+                #wf.write(" ".join(sentence) + "\n" if sentence else " ")
 
-            if not sentence:
-                wf.write("\n")
+        fp.close()
+        print(skipped, "reviews skipped becuase 'reviewText' was not found")
 
 
 if __name__ == "__main__":

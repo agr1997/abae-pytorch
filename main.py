@@ -3,6 +3,7 @@ import numpy as np
 import torch
 from model import ABAE
 from reader import get_centroids, get_w2v, read_data_tensors
+import json
 
 
 if __name__ == "__main__":
@@ -39,6 +40,9 @@ if __name__ == "__main__":
 
     parser.add_argument("--maxlen", "-l", type=int, default=201,
                         help="Max length of the considered sentence; the rest is clipped if longer")
+
+    parser.add_argument("--aspect-file", "-af", dest="aspect_file", type=str, default="aspects.txt",
+                        help="Path to the aspects file generated after running main.py.")
 
     args = parser.parse_args()
 
@@ -97,12 +101,15 @@ if __name__ == "__main__":
             optimizer.step()
             # scheduler.step(epoch=t)
 
-            if item_number % 1000 == 0:
+            if item_number % 100 == 0:
 
                 print(item_number, "batches, and LR:", optimizer.param_groups[0]['lr'])
 
+                fp = open(args.aspect_file, 'w')
                 for i, aspect in enumerate(model.get_aspect_words(w2v_model)):
                     print(i + 1, " ".join(["%10s" % a for a in aspect]))
-
+                    #fp.write(str(i+1)+" ".join(["%10s" % a for a in aspect])+'\n')
+                    fp.write(json.dumps({i: aspect}) + '\n')
+                fp.close()
                 print("Loss:", loss.item())
                 print()
