@@ -1,3 +1,7 @@
+# ASPECT BASED SENTIMENT ANALYSIS using an unsupervised ABAE model pipelined with NLTK's VADER model.
+Refer to final_report.pdf for details on the project.
+
+
 # ABAE-PyTorch
 
 Yet another PyTorch implementation of the model described in the paper [**An Unsupervised Neural Attention Model for Aspect Extraction**](https://aclweb.org/anthology/papers/P/P17/P17-1036/) by He, Ruidan and  Lee, Wee Sun  and  Ng, Hwee Tou  and  Dahlmeier, Daniel, **ACL2017**.
