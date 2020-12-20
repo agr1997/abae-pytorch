@@ -1,5 +1,5 @@
 # ASPECT BASED SENTIMENT ANALYSIS using an unsupervised ABAE model pipelined with NLTK's VADER model.
-Refer to final_report.pdf for details on the project.
+Refer to 696 report pdf for details on the project.
 
 
 # ABAE-PyTorch
